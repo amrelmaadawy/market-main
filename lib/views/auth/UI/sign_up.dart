@@ -1,6 +1,7 @@
 import 'package:app/core/app_colors.dart';
 import 'package:app/core/components/custom_text_form_field.dart';
 import 'package:app/core/functions/snake_bar.dart';
+import 'package:app/views/auth/UI/login_view.dart';
 import 'package:app/views/auth/UI/widgets/login_widget.dart';
 import 'package:app/views/auth/UI/widgets/text_button.dart';
 import 'package:app/views/auth/logic/loginstate_cubit.dart';
@@ -27,13 +28,18 @@ class _SignUpState extends State<SignUp> {
     return BlocConsumer<LoginstateCubit, LoginstateState>(
       listener: (context, state) {
         if (state is SignUpstateSuccesses) {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return LoginView();
+          }));
+          snakeBar(context, 'Sign in success please Login', Colors.green);
+        } else if (state is GoogleSignInSuccesses) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return MainHomeView();
           }));
-        }
-        if (state is SignUpstateErorr) {
-          snakeBar(context, state.message, Colors.red);
+          snakeBar(context, 'Sign In Successes', Colors.green);
+        } else if (state is SignUpstateErorr || state is GoogleSignInErorr) {
+          snakeBar(context, 'Error please Try again', Colors.red);
         }
       },
       builder: (context, state) {
@@ -100,12 +106,13 @@ class _SignUpState extends State<SignUp> {
                           ),
                           LoginWidget(
                             text: 'Sign Up',
-                            onPressed: () {
+                            onPressed: () async {
                               if (formKey.currentState!.validate()) {
-                                cubit.register(
+                                await cubit.register(
                                     email: emailController.text,
                                     password: passwordController.text,
                                     name: nameController.text);
+                                // ignore: use_build_context_synchronously
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
                                   return MainHomeView();

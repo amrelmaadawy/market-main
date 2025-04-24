@@ -20,7 +20,10 @@ void main() async {
     ),
   );
   Bloc.observer = MyObserver();
-  runApp(const MyApp());
+  runApp(BlocProvider(
+    create: (context) => LoginstateCubit(),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,20 +32,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SupabaseClient client = Supabase.instance.client;
-    return BlocProvider(
-      create: (context) => LoginstateCubit(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          scaffoldBackgroundColor: AppColors.kScaffoldColor,
-          useMaterial3: true,
-        ),
-        home: 
-        client.auth.currentUser != null
-            ? MainHomeView()
-            : const LoginView(),
-            
-      ),
+    return BlocConsumer<LoginstateCubit, LoginstateState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            scaffoldBackgroundColor: AppColors.kScaffoldColor,
+            useMaterial3: true,
+          ),
+          home: client.auth.currentUser != null
+              ? state is LoginstateLoading
+                  ? Scaffold(
+                      body: Center(
+                      child: CircularProgressIndicator(),
+                    ))
+                  : MainHomeView()
+              : const LoginView(),
+        );
+      },
     );
   }
 }

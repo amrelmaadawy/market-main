@@ -44,6 +44,7 @@ class _LoginViewState extends State<LoginView> {
               MaterialPageRoute(builder: (context) {
             return MainHomeView();
           }));
+          snakeBar(context, 'Login success', Colors.green);
         }
         if (state is LoginstateErorr) {
           snakeBar(context, state.message, Colors.red);

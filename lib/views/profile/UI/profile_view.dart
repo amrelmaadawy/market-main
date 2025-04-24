@@ -32,7 +32,7 @@ class ProfileView extends StatelessWidget {
               : SafeArea(
                   child: Center(
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.7,
                       child: Card(
                         color: AppColors.kWhiteColor,
                         shape: const RoundedRectangleBorder(

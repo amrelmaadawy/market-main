@@ -1,6 +1,7 @@
 import 'package:app/core/dio_servises.dart';
 import 'package:app/core/models/product_model/fave_product.dart';
 import 'package:app/core/models/product_model/product_model.dart';
+import 'package:app/core/models/product_model/purchase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -14,6 +15,7 @@ class HomeCubit extends Cubit<HomeState> {
   List<ProductModel> searchResult = [];
   List<ProductModel> categoryList = [];
   List<ProductModel> favoriteProductsList = [];
+  List<ProductModel> myOrdersList = [];
   Map<String, bool> isFave = {};
   String userId = Supabase.instance.client.auth.currentUser!.id;
   Future<void> getProduct({String? query, String? category}) async {
@@ -21,6 +23,7 @@ class HomeCubit extends Cubit<HomeState> {
     searchResult.clear();
     categoryList.clear();
     favoriteProductsList.clear();
+    myOrdersList.clear();
     emit(GetDataLoadingState());
     try {
       Response response = await _dioServises
@@ -31,6 +34,7 @@ class HomeCubit extends Cubit<HomeState> {
       getFaveProduct();
       search(query);
       getCategory(category);
+      getMyOrders();
       emit(GetDataSuccesseState());
     } catch (e) {
       emit(GetDataErrorState(e.toString()));
@@ -111,14 +115,23 @@ class HomeCubit extends Cubit<HomeState> {
     String path = 'purchase';
     emit(PaymentLoadingState());
     try {
-      await _dioServises.postData(path, {
-        "user_id": userId,
-        "is_bought": true,
-        "product_id": productId
-      });
+      await _dioServises.postData(path,
+          {"user_id": userId, "is_bought": true, "product_id": productId});
       emit(PaymentSuccesseState());
     } catch (e) {
       emit(PaymentErrorState());
+    }
+  }
+
+  void getMyOrders() {
+    for (ProductModel product in products) {
+      if (product.purchase != null && product.purchase!.isNotEmpty) {
+        for (Purchase purchaseProduct in product.purchase!) {
+          if (purchaseProduct.userId == userId) {
+            myOrdersList.add(product);
+          }
+        }
+      }
     }
   }
 }

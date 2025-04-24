@@ -29,11 +29,11 @@ class _HomeViewState extends State<HomeView> {
       integrationMobileWalletId:
           integrationMobileWalletId, // Required: Found under Developers -> Payment Integrations -> Mobile Wallet ID
 
-      userData: UserData(
-        email:widget.userModule.email, // Optional: Defaults to 'NA'
+      // userData: UserData(
+      //   email:widget.userModule.email, // Optional: Defaults to 'NA'
 
-        name: widget.userModule.name, // Optional: Defaults to 'NA'
-      ),
+      //   name: widget.userModule.name, // Optional: Defaults to 'NA'
+      // ),
 
       // Optional Style Customizations
       style: Style(
@@ -42,9 +42,7 @@ class _HomeViewState extends State<HomeView> {
         appBarBackgroundColor: AppColors.kPrimaryColor, // Default: Colors.blue
         appBarForegroundColor: AppColors.kWhiteColor, // Default: Colors.white
         textStyle: TextStyle(), // Default: TextStyle()
-        buttonStyle: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.kPrimaryColor,
-        ), // Default: ElevatedButton.styleFrom()
+       
         circleProgressColor: AppColors.kPrimaryColor, // Default: Colors.blue
         unselectedColor: AppColors.kGreyColor, // Default: Colors.grey
       ),

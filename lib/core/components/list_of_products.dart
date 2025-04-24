@@ -12,12 +12,15 @@ class ListOfProducts extends StatelessWidget {
     this.query,
     this.category,
     this.isFaveoriteView = false,
+    this.isMyOrdersView = false,
   });
   final bool? shrinkWrap;
   final ScrollPhysics? physics;
   final String? query;
   final String? category;
   final bool isFaveoriteView;
+  final bool isMyOrdersView;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -33,19 +36,22 @@ class ListOfProducts extends StatelessWidget {
                   ? homeCubit.categoryList
                   : isFaveoriteView
                       ? homeCubit.favoriteProductsList
-                      : homeCubit.products;
+                      : isMyOrdersView
+                          ? homeCubit.myOrdersList
+                          : homeCubit.products;
           return product.isEmpty
               ? Center(
-                child: Text(
+                  child: Text(
                     'There is no element',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-              )
+                )
               : ListView.builder(
                   shrinkWrap: shrinkWrap ?? true,
                   physics: physics ?? const NeverScrollableScrollPhysics(),
                   itemCount: product.length,
                   itemBuilder: (context, index) {
+                    
                     return ProductCard(
                       onPaymentSuccess: () {
                         homeCubit.payment(productId: product[index].productId!);

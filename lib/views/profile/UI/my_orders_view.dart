@@ -13,6 +13,7 @@ class MyOrdersView extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(16.0),
             child: ListOfProducts(
+              isMyOrdersView: true,
               shrinkWrap: false,
               physics: ScrollPhysics(),
             ),

@@ -1,17 +1,29 @@
+import 'package:app/core/app_colors.dart';
 import 'package:app/core/components/cashed_loading_image.dart';
 import 'package:app/core/functions/custom_app_bar.dart';
 import 'package:app/core/components/custom_text_form_field.dart';
+import 'package:app/core/functions/snake_bar.dart';
 import 'package:app/core/models/product_model/product_model.dart';
+import 'package:app/views/auth/UI/widgets/custom_button.dart';
 import 'package:app/views/auth/logic/loginstate_cubit.dart';
 import 'package:app/views/productDetails/UI/widgets/comments.dart';
 import 'package:app/views/productDetails/UI/widgets/rating.dart';
 import 'package:app/views/productDetails/logic/product_details_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pay_with_paymob/pay_with_paymob.dart';
 
 class ProductDetails extends StatefulWidget {
-  const ProductDetails({super.key, required this.product});
+  const ProductDetails(
+      {super.key,
+      required this.product,
+      required this.onTap,
+      required this.isFave,
+      required this.onPaymentSuccess});
   final ProductModel product;
+  final Function()? onTap;
+  final bool isFave;
+  final void Function() onPaymentSuccess;
 
   @override
   State<ProductDetails> createState() => _ProductDetailsState();
@@ -71,18 +83,52 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 color: Colors.yellow[700],
                               ),
                               const Spacer(),
-                              const Icon(
-                                Icons.favorite,
-                                color: Colors.grey,
+                              GestureDetector(
+                                onTap: widget.onTap,
+                                child: Icon(
+                                  Icons.favorite,
+                                  color:
+                                      widget.isFave ? Colors.red : Colors.grey,
+                                ),
                               ),
                             ],
                           ),
                           const SizedBox(
                             height: 16,
                           ),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: CustomButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PaymentView(
+                                            onPaymentSuccess: widget.onPaymentSuccess,
+                                            onPaymentError: () {
+                                              snakeBar(context, 'payment Error',
+                                                  Colors.red);
+                                            },
+                                            price: double.parse(widget.product
+                                                .price!), // Required: Total price (e.g., 100 for 100 EGP)
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Buy Now',
+                                      style: TextStyle(color: AppColors.kWhiteColor),
+                                    )),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 16,),
                           Center(
                               child: Text(widget.product.description ??
-                                  'Product Description')),
+                                  'Product Description',style: TextStyle(fontSize: 15),)),
                           Rating(
                             rate: cubit.userRate.toDouble(),
                             onRatingUpdate: (rating) {

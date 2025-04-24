@@ -11,18 +11,25 @@ class ProductCard extends StatelessWidget {
     required this.products,
     required this.onPressed,
     required this.onPaymentSuccess,
-  required this.isFave,
+    required this.isFave,
   });
   final ProductModel products;
   final void Function() onPressed;
   final void Function() onPaymentSuccess;
- final bool isFave;
+  final bool isFave;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) =>  ProductDetails(product: products,)));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductDetails(
+                  onPaymentSuccess: onPaymentSuccess,
+                      product: products,
+                      onTap:onPressed ,
+                      isFave:isFave
+                    )));
       },
       child: Column(
         children: [
@@ -34,12 +41,12 @@ class ProductCard extends StatelessWidget {
             height: 16,
           ),
           ProductName(
-isFave: isFave,
+            isFave: isFave,
             onPressed: onPressed,
             productName: products.productName ?? 'name',
           ),
           ProductPrice(
-            onPaymentSuccess:onPaymentSuccess ,
+            onPaymentSuccess: onPaymentSuccess,
             oldPrice: products.oldPrice ?? '11',
             newPrice: products.price ?? '11',
           ),

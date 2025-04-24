@@ -21,7 +21,7 @@ class Comments extends StatelessWidget {
           } else if (snapshot.hasData) {
             List<Map<String, dynamic>>? data = snapshot.data;
 
-            return ListView.separated(
+            return data!.isEmpty? Text('No comments yet '): ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
@@ -29,16 +29,16 @@ class Comments extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          data?[index]["user_name"],
+                          data[index]["user_name"],
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold),
                         ),
-                        Text(data?[index]["comment"],
+                        Text(data[index]["comment"],
                             style: TextStyle(fontSize: 15)),
                         SizedBox(
                           height: 5,
                         ),
-                        data?[index]["reply"] != null
+                        data[index]["reply"] != null
                             ? Column(
                                 children: [
                                   Text("Replay :-",
@@ -49,7 +49,7 @@ class Comments extends StatelessWidget {
                                     height: 5,
                                   ),
                                   Text(
-                                    data![index]["reply"],
+                                    data[index]["reply"],
                                     style: TextStyle(fontSize: 15),
                                   ),
                                 ],
@@ -60,7 +60,7 @@ class Comments extends StatelessWidget {
                 separatorBuilder: (context, index) {
                   return const Divider();
                 },
-                itemCount: data?.length ?? 0);
+                itemCount: data.length);
           } else if (snapshot.hasError) {
             return Center(
               child: Text("Error please try again"),

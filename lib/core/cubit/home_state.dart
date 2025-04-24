@@ -25,3 +25,9 @@ class DeletFromFaveLoadingState extends HomeState {}
 class DeletFromFaveSuccesseState extends HomeState {}
 
 class DeletFromFaveErrorState extends HomeState {}
+
+class PaymentLoadingState extends HomeState {}
+
+class PaymentSuccesseState extends HomeState {}
+
+class PaymentErrorState extends HomeState {}

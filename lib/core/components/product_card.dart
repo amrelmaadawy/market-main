@@ -10,10 +10,12 @@ class ProductCard extends StatelessWidget {
     super.key,
     required this.products,
     required this.onPressed,
+    required this.onPaymentSuccess,
   required this.isFave,
   });
   final ProductModel products;
   final void Function() onPressed;
+  final void Function() onPaymentSuccess;
  final bool isFave;
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ isFave: isFave,
             productName: products.productName ?? 'name',
           ),
           ProductPrice(
+            onPaymentSuccess:onPaymentSuccess ,
             oldPrice: products.oldPrice ?? '11',
             newPrice: products.price ?? '11',
           ),

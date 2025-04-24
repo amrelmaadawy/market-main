@@ -67,7 +67,7 @@ class HomeCubit extends Cubit<HomeState> {
         "for_user": userId,
         "for_product": productId,
       });
-      
+
       isFave.addAll({productId: true});
       emit(AddToFaveSuccesseState());
     } catch (e) {
@@ -104,6 +104,21 @@ class HomeCubit extends Cubit<HomeState> {
           }
         }
       }
+    }
+  }
+
+  Future<void> payment({required String productId}) async {
+    String path = 'purchase';
+    emit(PaymentLoadingState());
+    try {
+      await _dioServises.postData(path, {
+        "user_id": userId,
+        "is_bought": true,
+        "product_id": productId
+      });
+      emit(PaymentSuccesseState());
+    } catch (e) {
+      emit(PaymentErrorState());
     }
   }
 }

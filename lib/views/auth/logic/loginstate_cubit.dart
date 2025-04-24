@@ -130,7 +130,7 @@ class LoginstateCubit extends Cubit<LoginstateState> {
     }
   }
 
-  UserModule? userModule;
+  UserModule? userModule=UserModule(email: '', id: '', name: '');
   Future<void> getData() async {
     emit(GetDataLoading());
     try {

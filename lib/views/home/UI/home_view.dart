@@ -1,6 +1,7 @@
 import 'package:app/core/app_colors.dart';
 import 'package:app/core/components/list_of_products.dart';
 import 'package:app/core/sensitive_data.dart';
+import 'package:app/views/auth/logic/module/user_module.dart';
 import 'package:app/views/home/UI/search_view.dart';
 import 'package:app/views/home/UI/widgets/categories_list.dart';
 
@@ -9,39 +10,48 @@ import 'package:flutter/material.dart';
 import 'package:pay_with_paymob/pay_with_paymob.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
-
+  const HomeView({super.key,required this.userModule});
+  final UserModule userModule;
   @override
   State<HomeView> createState() => _HomeViewState();
 }
+
 class _HomeViewState extends State<HomeView> {
   TextEditingController mainSearchController = TextEditingController();
   @override
   void initState() {
     PaymentData.initialize(
-  apiKey: paymopeApiKey, // Required: Found under Dashboard -> Settings -> Account Info -> API Key
-  iframeId: iframeId, // Required: Found under Developers -> iframes
-  integrationCardId:integrationCardId, // Required: Found under Developers -> Payment Integrations -> Online Card ID
-  integrationMobileWalletId: integrationMobileWalletId, // Required: Found under Developers -> Payment Integrations -> Mobile Wallet ID
+      apiKey:
+          paymopeApiKey, // Required: Found under Dashboard -> Settings -> Account Info -> API Key
+      iframeId: iframeId, // Required: Found under Developers -> iframes
+      integrationCardId:
+          integrationCardId, // Required: Found under Developers -> Payment Integrations -> Online Card ID
+      integrationMobileWalletId:
+          integrationMobileWalletId, // Required: Found under Developers -> Payment Integrations -> Mobile Wallet ID
 
-  
-  
-  // Optional Style Customizations
-  style: Style(
-    primaryColor:AppColors.kPrimaryColor, // Default: Colors.blue
-    scaffoldColor: AppColors.kScaffoldColor, // Default: Colors.white
-    appBarBackgroundColor:AppColors.kPrimaryColor, // Default: Colors.blue
-    appBarForegroundColor: AppColors.kWhiteColor, // Default: Colors.white
-    textStyle: TextStyle(), // Default: TextStyle()
-    buttonStyle: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.kPrimaryColor,
-    ), // Default: ElevatedButton.styleFrom()
-    circleProgressColor:AppColors.kPrimaryColor, // Default: Colors.blue
-    unselectedColor: AppColors.kGreyColor, // Default: Colors.grey
-  ),
-);
+      userData: UserData(
+        email:widget.userModule.email, // Optional: Defaults to 'NA'
+
+        name: widget.userModule.name, // Optional: Defaults to 'NA'
+      ),
+
+      // Optional Style Customizations
+      style: Style(
+        primaryColor: AppColors.kPrimaryColor, // Default: Colors.blue
+        scaffoldColor: AppColors.kScaffoldColor, // Default: Colors.white
+        appBarBackgroundColor: AppColors.kPrimaryColor, // Default: Colors.blue
+        appBarForegroundColor: AppColors.kWhiteColor, // Default: Colors.white
+        textStyle: TextStyle(), // Default: TextStyle()
+        buttonStyle: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.kPrimaryColor,
+        ), // Default: ElevatedButton.styleFrom()
+        circleProgressColor: AppColors.kPrimaryColor, // Default: Colors.blue
+        unselectedColor: AppColors.kGreyColor, // Default: Colors.grey
+      ),
+    );
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -34,29 +34,36 @@ class ListOfProducts extends StatelessWidget {
                   : isFaveoriteView
                       ? homeCubit.favoriteProductsList
                       : homeCubit.products;
-          return ListView.builder(
-              shrinkWrap: shrinkWrap ?? true,
-              physics: physics ?? const NeverScrollableScrollPhysics(),
-              itemCount: product.length,
-              itemBuilder: (context, index) {
-                return ProductCard(
-                  onPaymentSuccess: () {
-                    homeCubit.payment(productId: product[index].productId!);
-                  },
-                  products: product[index],
-                  isFave: homeCubit.checkIsFave(
-                      productId: product[index].productId!),
-                  onPressed: () {
-                    bool isFavorite = homeCubit.checkIsFave(
-                        productId: product[index].productId!);
-                    isFavorite
-                        ? homeCubit.deletFave(
-                            productId: product[index].productId!)
-                        : homeCubit.addToFave(
+          return product.isEmpty
+              ? Center(
+                child: Text(
+                    'There is no element',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+              )
+              : ListView.builder(
+                  shrinkWrap: shrinkWrap ?? true,
+                  physics: physics ?? const NeverScrollableScrollPhysics(),
+                  itemCount: product.length,
+                  itemBuilder: (context, index) {
+                    return ProductCard(
+                      onPaymentSuccess: () {
+                        homeCubit.payment(productId: product[index].productId!);
+                      },
+                      products: product[index],
+                      isFave: homeCubit.checkIsFave(
+                          productId: product[index].productId!),
+                      onPressed: () {
+                        bool isFavorite = homeCubit.checkIsFave(
                             productId: product[index].productId!);
-                  },
-                );
-              });
+                        isFavorite
+                            ? homeCubit.deletFave(
+                                productId: product[index].productId!)
+                            : homeCubit.addToFave(
+                                productId: product[index].productId!);
+                      },
+                    );
+                  });
         },
       ),
     );

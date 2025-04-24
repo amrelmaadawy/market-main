@@ -35,7 +35,7 @@ class _SignUpState extends State<SignUp> {
         } else if (state is GoogleSignInSuccesses) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return MainHomeView();
+            return MainHomeView(userModule:  cubit.userModule!,);
           }));
           snakeBar(context, 'Sign In Successes', Colors.green);
         } else if (state is SignUpstateErorr || state is GoogleSignInErorr) {
@@ -115,7 +115,7 @@ class _SignUpState extends State<SignUp> {
                                 // ignore: use_build_context_synchronously
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return MainHomeView();
+                                  return MainHomeView(userModule: cubit.userModule!,);
                                 }));
                               } else {
                                 snakeBar(context, 'Please fill all fields',

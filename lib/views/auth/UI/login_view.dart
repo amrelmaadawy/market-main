@@ -42,7 +42,9 @@ class _LoginViewState extends State<LoginView> {
         if (state is LoginstateSuccesses || state is GoogleSignInSuccesses) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
-            return MainHomeView();
+            return MainHomeView(
+              userModule: context.read<LoginstateCubit>().userModule!,
+            );
           }));
           snakeBar(context, 'Login success', Colors.green);
         }
@@ -140,7 +142,11 @@ class _LoginViewState extends State<LoginView> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(builder: (context) {
-                                          return MainHomeView();
+                                          return MainHomeView(
+                                            userModule: context
+                                                .read<LoginstateCubit>()
+                                                .userModule!,
+                                          );
                                         }),
                                       );
                                     } else {

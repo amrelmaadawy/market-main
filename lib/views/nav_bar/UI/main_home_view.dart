@@ -1,4 +1,5 @@
 import 'package:app/core/app_colors.dart';
+import 'package:app/views/auth/logic/module/user_module.dart';
 import 'package:app/views/favorite/UI/favorite_view.dart';
 import 'package:app/views/home/UI/home_view.dart';
 import 'package:app/views/nav_bar/logic/nav_bar_cubit_cubit.dart';
@@ -8,14 +9,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
-class MainHomeView extends StatelessWidget {
-  MainHomeView({super.key});
-  final List<Widget> views = [
-    const HomeView(),
-    const StoreView(),
-    const FavoriteView(),
-    const ProfileView()
-  ];
+class MainHomeView extends StatefulWidget {
+  const MainHomeView({super.key, required this.userModule});
+
+  final UserModule userModule;
+  @override
+  State<MainHomeView> createState() => _MainHomeViewState();
+}
+
+class _MainHomeViewState extends State<MainHomeView> {
+  late List<Widget> views;
+  @override
+  void initState() {
+    super.initState();
+
+    views = [
+      HomeView(userModule: widget.userModule),
+      const StoreView(),
+      const FavoriteView(),
+      const ProfileView()
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

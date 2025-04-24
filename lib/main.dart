@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
                       body: Center(
                       child: CircularProgressIndicator(),
                     ))
-                  : MainHomeView()
+                  : MainHomeView(userModule: context.read<LoginstateCubit>().userModule!,)
               : const LoginView(),
         );
       },

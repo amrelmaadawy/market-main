@@ -68,3 +68,12 @@ class GetDataErorr extends LoginstateState {
   final String message;
   GetDataErorr(this.message);
 }
+
+
+class EditNameLoading extends LoginstateState {}
+
+class EditNameSuccesses extends LoginstateState {}
+
+class EditNameErorr extends LoginstateState {
+  
+}

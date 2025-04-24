@@ -130,7 +130,7 @@ class LoginstateCubit extends Cubit<LoginstateState> {
     }
   }
 
-  UserModule? userModule=UserModule(email: '', id: '', name: '');
+  UserModule? userModule = UserModule(email: '', id: '', name: '');
   Future<void> getData() async {
     emit(GetDataLoading());
     try {
@@ -150,6 +150,23 @@ class LoginstateCubit extends Cubit<LoginstateState> {
         print("===========================================");
       }
       emit(GetDataErorr(e.toString()));
+    }
+  }
+
+  Future<void> editName({required String name}) async {
+    emit(EditNameLoading());
+    try {
+      final userId = client.auth.currentUser?.id;
+      if (userId == null) {
+        emit(EditNameErorr());
+        return;
+      }
+
+      await client.from('Users').update({'name': name}).eq('id', userId);
+
+      emit(EditNameSuccesses()); 
+    } catch (e) {
+      emit(EditNameErorr()); 
     }
   }
 }

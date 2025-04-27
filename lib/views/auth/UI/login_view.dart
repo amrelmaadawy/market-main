@@ -2,6 +2,7 @@
 
 import 'package:app/core/app_colors.dart';
 import 'package:app/core/functions/snake_bar.dart';
+import 'package:app/core/shimmer/shimmer_login_view.dart';
 import 'package:app/views/auth/UI/forget_password.dart';
 import 'package:app/views/auth/UI/sign_up.dart';
 import 'package:app/core/components/custom_text_form_field.dart';
@@ -39,14 +40,14 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return BlocConsumer<LoginstateCubit, LoginstateState>(
       listener: (context, state) {
-        if (state is LoginstateSuccesses || state is GoogleSignInSuccesses) {
+        if (state is LoginstateSuccesses || state is GoogleSignInSuccesses ) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) {
             return MainHomeView(
               userModule: context.read<LoginstateCubit>().userModule!,
             );
           }));
-          snakeBar(context, 'Login success', Colors.green);
+          // snakeBar(context, 'Login success', Colors.green);
         }
         if (state is LoginstateErorr) {
           snakeBar(context, state.message, Colors.red);
@@ -55,8 +56,8 @@ class _LoginViewState extends State<LoginView> {
       builder: (context, state) {
         LoginstateCubit cubit = context.read<LoginstateCubit>();
         return Scaffold(
-          body: state is LoginstateLoading
-              ? const CircularProgressIndicator()
+          body: state is LoginstateLoading || state is GoogleSignInLoading
+              ? const ShimmerLoginView()
               : Form(
                   key: _formKey,
                   child: SafeArea(

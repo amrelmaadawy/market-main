@@ -37,8 +37,9 @@ class _StoreViewState extends State<StoreView> {
               if (storeSearchController.text.isNotEmpty) {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return SearchView(query: storeSearchController.text);
-                }));
-                storeSearchController.clear();
+                })).then((value) {
+                  storeSearchController.clear();
+                });
               }
             },
           ),

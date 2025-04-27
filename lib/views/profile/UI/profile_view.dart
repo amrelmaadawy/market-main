@@ -1,4 +1,6 @@
 import 'package:app/core/app_colors.dart';
+import 'package:app/core/functions/snake_bar.dart';
+import 'package:app/core/shimmer/shimmer_login_view.dart';
 import 'package:app/views/auth/UI/login_view.dart';
 import 'package:app/views/auth/logic/loginstate_cubit.dart';
 import 'package:app/views/auth/logic/module/user_module.dart';
@@ -23,12 +25,15 @@ class ProfileView extends StatelessWidget {
               return LoginView();
             }));
           }
+          if (state is EditNameSuccesses) {
+            snakeBar(context, 'name updated successfully', Colors.green);
+          }
         },
         builder: (context, state) {
           LoginstateCubit cubit = context.read<LoginstateCubit>();
           UserModule? user = context.read<LoginstateCubit>().userModule;
           return state is LogoutLoading
-              ? Center(child: CircularProgressIndicator())
+              ? ShimmerLoginView()
               : SafeArea(
                   child: Center(
                     child: SizedBox(

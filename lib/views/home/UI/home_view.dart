@@ -52,7 +52,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return  Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
         children: [
@@ -65,8 +65,11 @@ class _HomeViewState extends State<HomeView> {
               if (mainSearchController.text.isNotEmpty) {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return SearchView(query: mainSearchController.text);
-                }));
-                mainSearchController.clear();
+                })).then((value)
+                {
+                  mainSearchController.clear();
+                });
+                
               }
             },
           ),

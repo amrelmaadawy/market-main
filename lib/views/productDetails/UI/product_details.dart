@@ -4,6 +4,7 @@ import 'package:app/core/functions/custom_app_bar.dart';
 import 'package:app/core/components/custom_text_form_field.dart';
 import 'package:app/core/functions/snake_bar.dart';
 import 'package:app/core/models/product_model/product_model.dart';
+import 'package:app/core/shimmer/shimmer_detailes_view.dart';
 import 'package:app/views/auth/UI/widgets/custom_button.dart';
 import 'package:app/views/auth/logic/loginstate_cubit.dart';
 import 'package:app/views/productDetails/UI/widgets/comments.dart';
@@ -45,12 +46,12 @@ class _ProductDetailsState extends State<ProductDetails> {
         },
         builder: (context, state) {
           ProductDetailsCubit cubit = context.read<ProductDetailsCubit>();
-          return Scaffold(
-            appBar: customAppBar(context, widget.product.productName ?? ''),
-            body: state is GetRatesLoadingState ||
+          return  state is GetRatesLoadingState ||
                     state is AddCommentLoadingState
-                ? Center(child: CircularProgressIndicator())
-                : Padding(
+                ? ShimmerDetailesView()
+                : Scaffold(
+            appBar: customAppBar(context, widget.product.productName ?? ''),
+            body: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: SingleChildScrollView(
                       child: Column(

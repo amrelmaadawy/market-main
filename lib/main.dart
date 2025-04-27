@@ -2,7 +2,6 @@ import 'package:app/core/app_colors.dart';
 import 'package:app/core/functions/bloc_observer.dart';
 import 'package:app/core/sensitive_data.dart';
 import 'package:app/core/shimmer/shimmer_home_view.dart';
-import 'package:app/core/shimmer/shimmer_list_of_product.dart';
 
 import 'package:app/views/auth/UI/login_view.dart';
 import 'package:app/views/auth/logic/loginstate_cubit.dart';
@@ -33,6 +32,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
+
   Widget build(BuildContext context) {
     SupabaseClient client = Supabase.instance.client;
     return BlocConsumer<LoginstateCubit, LoginstateState>(
@@ -44,12 +44,13 @@ class MyApp extends StatelessWidget {
             scaffoldBackgroundColor: AppColors.kScaffoldColor,
             useMaterial3: true,
           ),
-          home: ShimmerListOfProduct(),
-          // client.auth.currentUser != null
-          //     ? state is LoginstateLoading
-          //         ? ShimmerHomeView()
-          //         : MainHomeView(userModule: context.read<LoginstateCubit>().userModule!,)
-          //     : const LoginView(),
+          home: client.auth.currentUser != null
+              ? state is LoginstateLoading || state is GoogleSignInLoading
+                  ? ShimmerHomeView()
+                  : MainHomeView(
+                      userModule: context.read<LoginstateCubit>().userModule!,
+                    )
+              : const LoginView(),
         );
       },
     );

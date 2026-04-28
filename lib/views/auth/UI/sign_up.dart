@@ -119,13 +119,6 @@ class _SignUpState extends State<SignUp> {
                                           email: emailController.text,
                                           password: passwordController.text,
                                           name: nameController.text);
-                                      // ignore: use_build_context_synchronously
-                                      Navigator.push(context,
-                                          MaterialPageRoute(builder: (context) {
-                                        return MainHomeView(
-                                          userModule: cubit.userModule!,
-                                        );
-                                      }));
                                     } else {
                                       snakeBar(context,
                                           'Please fill all fields', Colors.red);

@@ -16,27 +16,34 @@ class CategoriesList extends StatelessWidget {
         separatorBuilder: (context, index) => const SizedBox(width: 20),
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: ()
-            {
+            onTap: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return CategoryView(category: categorie[index].name);
               }));
             },
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: AppColors.kPrimaryColor,
-                    foregroundColor: AppColors.kWhiteColor,
-                    child: Icon(
-                      categorie[index].icon,
-                      size: 38,
-                    ),
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.kPrimaryColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    categorie[index].icon,
+                    size: 28,
+                    color: AppColors.kPrimaryColor,
                   ),
                 ),
-                Text(categorie[index].name),
+                const SizedBox(height: 8),
+                Text(
+                  categorie[index].name,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.kBlackColor,
+                  ),
+                ),
               ],
             ),
           );

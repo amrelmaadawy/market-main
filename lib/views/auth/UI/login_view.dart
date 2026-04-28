@@ -10,10 +10,8 @@ import 'package:app/views/auth/UI/widgets/login_widget.dart';
 import 'package:app/views/auth/UI/widgets/text_button.dart';
 import 'package:app/views/auth/logic/loginstate_cubit.dart';
 import 'package:app/views/nav_bar/UI/main_home_view.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -30,9 +28,6 @@ class _LoginViewState extends State<LoginView> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   void initState() {
-    if (kDebugMode) {
-      print(Supabase.instance.client.auth.currentUser);
-    }
     super.initState();
   }
 
@@ -131,24 +126,9 @@ class _LoginViewState extends State<LoginView> {
                                   text: 'Login',
                                   onPressed: () {
                                     if (_formKey.currentState!.validate()) {
-                                      cubit
-                                          .login(
+                                      cubit.login(
                                         email: emailController.text,
                                         password: passwordController.text,
-                                      )
-                                          .then((value) {
-                                        snakeBar(context, 'login successful',
-                                            Colors.green);
-                                      });
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) {
-                                          return MainHomeView(
-                                            userModule: context
-                                                .read<LoginstateCubit>()
-                                                .userModule!,
-                                          );
-                                        }),
                                       );
                                     } else {
                                       ScaffoldMessenger.of(context)

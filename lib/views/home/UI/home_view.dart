@@ -74,30 +74,31 @@ class _HomeViewState extends State<HomeView> {
             },
           ),
           const SizedBox(height: 16),
-          Image.asset('assets/images/buy.jpg'),
-          const SizedBox(height: 16),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.asset('assets/images/buy.jpg', fit: BoxFit.cover),
+          ),
+          const SizedBox(height: 24),
           const Text(
             'Popular Categories',
             style: TextStyle(
-              fontSize: 24,
+              fontSize: 22,
               fontWeight: FontWeight.bold,
               color: AppColors.kBlackColor,
             ),
           ),
           const SizedBox(height: 16),
           const CategoriesList(),
-          const SizedBox(
-            height: 16,
+          const SizedBox(height: 24),
+          const Text(
+            'Recent Products',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: AppColors.kBlackColor,
+            ),
           ),
-          const Text('Recntly products',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.kBlackColor,
-              )),
-          const SizedBox(
-            height: 16,
-          ),
+          const SizedBox(height: 16),
           const ListOfProducts()
         ],
       ),

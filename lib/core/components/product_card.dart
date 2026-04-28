@@ -1,3 +1,4 @@
+import 'package:app/core/app_colors.dart';
 import 'package:app/core/models/product_model/product_model.dart';
 import 'package:app/views/home/UI/widgets/offers_product.dart';
 import 'package:app/views/home/UI/widgets/product_name.dart';
@@ -25,35 +26,56 @@ class ProductCard extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => ProductDetails(
-                  onPaymentSuccess: onPaymentSuccess,
+                      onPaymentSuccess: onPaymentSuccess,
                       product: products,
-                      onTap:onPressed ,
-                      isFave:isFave
+                      onTap: onPressed,
+                      isFave: isFave,
                     )));
       },
-      child: Column(
-        children: [
-          OffersProduct(
-            offer: products.sale ?? '10',
-            imageUrl: products.imageUrl,
-          ),
-          SizedBox(
-            height: 16,
-          ),
-          ProductName(
-            isFave: isFave,
-            onPressed: onPressed,
-            productName: products.productName ?? 'name',
-          ),
-          ProductPrice(
-            onPaymentSuccess: onPaymentSuccess,
-            oldPrice: products.oldPrice ?? '11',
-            newPrice: products.price ?? '11',
-          ),
-          SizedBox(
-            height: 10,
-          )
-        ],
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          color: AppColors.kWhiteColor,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              child: OffersProduct(
+                offer: products.sale ?? '10',
+                imageUrl: products.imageUrl,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ProductName(
+                    isFave: isFave,
+                    onPressed: onPressed,
+                    productName: products.productName ?? 'name',
+                  ),
+                  const SizedBox(height: 8),
+                  ProductPrice(
+                    onPaymentSuccess: onPaymentSuccess,
+                    oldPrice: products.oldPrice ?? '11',
+                    newPrice: products.price ?? '11',
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

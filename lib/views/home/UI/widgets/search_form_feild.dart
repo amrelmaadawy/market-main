@@ -14,16 +14,21 @@ class SearchFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomTextFormFeild(
-        suffixIcon: ElevatedButton(
-          onPressed: onPressed,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: AppColors.kPrimaryColor,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-          ),
-          child: const Icon(
-            Icons.search,
-            color: AppColors.kWhiteColor,
+        suffixIcon: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: ElevatedButton(
+            onPressed: onPressed,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.kPrimaryColor,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
+              padding: const EdgeInsets.all(12),
+              elevation: 0,
+            ),
+            child: const Icon(
+              Icons.search,
+              color: AppColors.kWhiteColor,
+            ),
           ),
         ),
         lableText: 'Search in market',

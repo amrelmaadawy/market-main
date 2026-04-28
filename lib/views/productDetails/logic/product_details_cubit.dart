@@ -1,52 +1,21 @@
-import 'package:app/core/dio_servises.dart';
 import 'package:app/views/productDetails/logic/models/rates.dart';
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'product_details_state.dart';
 
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit() : super(ProductDetailsInitial());
-  final DioServises _dioServises = DioServises();
   List<Rates> rates = [];
+  List<Map<String, dynamic>> comments = []; 
   int userRate = 5;
   int avrage = 0;
-  String userId = Supabase.instance.client.auth.currentUser!.id;
+  String userId = "dummy_user_123";
+
   Future<void> getRate({required String productId}) async {
     emit(GetRatesLoadingState());
-
     try {
-      Response response =
-          await _dioServises.getData("rates?select=*&product_id=eq.$productId");
-      for (var rate in response.data) {
-        rates.add(Rates.fromJson(rate));
-      }
-
-      for (var userRate in rates) {
-        avrage += userRate.rates!;
-      }
-
-      if (rates.isNotEmpty) {
-        avrage = avrage ~/ rates.length;
-      } else {
-        avrage = 0;
-      }
-
-      List<Rates> userRates = rates.where((Rates rates) {
-        return rates.userId == userId;
-      }).toList();
-      if (userRates.isNotEmpty) {
-        userRate = userRates[0].rates!;
-      }
-      if (kDebugMode) {
-        print('rate for user ${rates[0].userId}');
-        print('user Id $userId');
-        print('user length ${userRates.length}');
-        print('user length $userRate');
-      }
+      await Future.delayed(const Duration(seconds: 1)); // Mock network
       emit(GetRatesSuccessState());
     } catch (e) {
       emit(GetRatesErrorState(error: e.toString()));
@@ -61,18 +30,17 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   Future<void> addOrUpdateRate(
       {required String productId, required Map<String, dynamic> data}) async {
     emit(AddOrupdateRateLoadingState());
-    String path = 'rates?select=*&product_id=eq.$productId&user_id=eq.$userId';
     try {
+      await Future.delayed(const Duration(seconds: 1)); // Mock network
       if (_isRateExist(productId: productId)) {
-        await _dioServises.patchData(path, data);
+         var index = rates.indexWhere((r) => r.userId == userId && r.productId == productId);
+         if(index != -1) rates[index] = Rates.fromJson(data);
       } else {
-        await _dioServises.postData(path, data);
+         rates.add(Rates.fromJson(data));
       }
+      userRate = data['rates'];
       emit(AddOrupdateRateSuccessState());
     } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
       emit(AddOrupdateRateErrorState());
     }
   }
@@ -83,9 +51,9 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     required String userId,
   }) async {
     emit(AddCommentLoadingState());
-    String path = 'comments?&user_id=eq.$userId&product_id=eq.$productId';
     try {
-      await _dioServises.postData(path, data);
+      await Future.delayed(const Duration(seconds: 1)); // Mock network
+      comments.add(data);
       emit(AddCommentSuccessState());
     } catch (e) {
       emit(AddCommentErrorState());

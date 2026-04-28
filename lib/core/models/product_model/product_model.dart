@@ -30,14 +30,31 @@ class ProductModel extends Equatable {
     this.purchase,
   });
 
-  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+  factory ProductModel.fromJson(Map<String, dynamic> json) {
+    if (json.containsKey('id') && json.containsKey('title')) {
+      return ProductModel(
+        productId: json['id']?.toString(),
+        createdAt: DateTime.now(),
+        productName: json['title'] as String?,
+        price: json['price']?.toString(),
+        oldPrice: json['price']?.toString(),
+        sale: "0",
+        description: json['description'] as String?,
+        category: json['category'] as String?,
+        imageUrl: json['image'] as dynamic,
+        faveProduct: [], 
+        purchase: [], 
+      );
+    }
+    
+    return ProductModel(
         productId: json['product_id'] as String?,
         createdAt: json['created_at'] == null
             ? null
             : DateTime.parse(json['created_at'] as String),
         productName: json['product_name'] as String?,
-        price: json['price'] as String?,
-        oldPrice: json['old_price'] as String?,
+        price: json['price']?.toString(),
+        oldPrice: json['old_price']?.toString(),
         sale: json['sale'] as String?,
         description: json['description'] as String?,
         category: json['category'] as String?,
@@ -49,6 +66,7 @@ class ProductModel extends Equatable {
             ?.map((e) => Purchase.fromJson(e as Map<String, dynamic>))
             .toList(),
       );
+  }
 
   Map<String, dynamic> toJson() => {
         'product_id': productId,

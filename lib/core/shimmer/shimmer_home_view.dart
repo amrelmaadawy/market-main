@@ -13,8 +13,8 @@ class ShimmerHomeView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Shimmer.fromColors(
-              baseColor: Colors.grey.shade500,
-                    highlightColor: Colors.grey.shade300,
+              baseColor: Colors.grey.shade300,
+              highlightColor: Colors.grey.shade100,
               child: Column(
                 children: [
                   Container(

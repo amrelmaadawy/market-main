@@ -38,6 +38,8 @@ dependencies:
   flutter_bloc: ^7.0.0
   flutter_rating_bar: ^4.0.1
   flutter_typeahead: ^5.2.0
+  get_it: ^9.2.1
+  google_fonts: ^8.1.0
   google_nav_bar: ^5.0.7
   google_sign_in: ^6.2.2
   pay_with_paymob: ^1.4.0

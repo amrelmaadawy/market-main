@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-
-  static const Color kPrimaryColor = Colors.black;
-  static const Color kScaffoldColor = Color(0xffF7F7F7);
-  static const Color kBordersideColor = Color(0xffE1E1E1);
-  static const Color kWhiteColor = Color(0xFFffffff);
-  static const Color kBlackColor = Color(0xFF17162B);
-  static const Color kGreyColor = Colors.grey;
+  // Clean Minimalist Palette
+  static const Color kPrimaryColor = Color(0xFF4F46E5); // Indigo
+  static const Color kScaffoldColor = Color(0xFFF8FAFC); // Soft cool off-white
+  static const Color kBordersideColor = Color(0xFFE2E8F0); // Subtle border
+  static const Color kWhiteColor = Color(0xFFFFFFFF); // Pure white for cards
+  static const Color kBlackColor = Color(0xFF0F172A); // Slate 900 for text
+  static const Color kGreyColor = Color(0xFF64748B); // Slate 500 for secondary text
 }

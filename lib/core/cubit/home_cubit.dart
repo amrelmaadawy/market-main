@@ -1,40 +1,34 @@
-import 'package:app/core/dio_servises.dart';
-import 'package:app/core/models/product_model/fave_product.dart';
 import 'package:app/core/models/product_model/product_model.dart';
-import 'package:app/core/models/product_model/purchase.dart';
+import 'package:app/core/repositories/product_repository.dart';
 import 'package:bloc/bloc.dart';
-import 'package:dio/dio.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 part 'home_state.dart';
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit() : super(HomeInitial());
-  final DioServises _dioServises = DioServises();
+  final ProductRepository productRepository;
+
+  HomeCubit({required this.productRepository}) : super(HomeInitial());
+
   List<ProductModel> products = [];
   List<ProductModel> searchResult = [];
   List<ProductModel> categoryList = [];
   List<ProductModel> favoriteProductsList = [];
   List<ProductModel> myOrdersList = [];
   Map<String, bool> isFave = {};
-  String userId = Supabase.instance.client.auth.currentUser!.id;
+  String userId = "dummy_user_123";
+  
   Future<void> getProduct({String? query, String? category}) async {
     products.clear();
     searchResult.clear();
     categoryList.clear();
     favoriteProductsList.clear();
     myOrdersList.clear();
+    isFave.clear();
     emit(GetDataLoadingState());
     try {
-      Response response = await _dioServises
-          .getData("products?select=*,fave_product(*),purchase(*)");
-      for (var product in response.data) {
-        products.add(ProductModel.fromJson(product));
-      }
-      getFaveProduct();
+      products = await productRepository.getProducts();
       search(query);
       getCategory(category);
-      getMyOrders();
       emit(GetDataSuccesseState());
     } catch (e) {
       emit(GetDataErrorState(e.toString()));
@@ -63,16 +57,14 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> addToFave({required String productId}) async {
-    String path = 'fave_product';
     emit(AddToFaveLoadingState());
     try {
-      await _dioServises.postData(path, {
-        "is_favorite": true,
-        "for_user": userId,
-        "for_product": productId,
-      });
+      await productRepository.addToFavorite(productId);
 
       isFave.addAll({productId: true});
+      var product = products.firstWhere((p) => p.productId == productId);
+      favoriteProductsList.add(product);
+
       emit(AddToFaveSuccesseState());
     } catch (e) {
       emit(AddToFaveErrorState());
@@ -85,11 +77,12 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> deletFave({required String productId}) async {
     emit(DeletFromFaveLoadingState());
-    String path = 'fave_product?for_product=eq.$productId&for_user=eq.$userId';
     try {
-      await _dioServises.deletData(path);
+      await productRepository.removeFromFavorite(productId);
+      
       isFave.removeWhere((key, value) => key == productId);
-      await getProduct();
+      favoriteProductsList.removeWhere((p) => p.productId == productId);
+      
       emit(DeletFromFaveSuccesseState());
     } catch (e) {
       emit(DeletFromFaveErrorState());
@@ -97,26 +90,15 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void getFaveProduct() {
-    for (ProductModel product in products) {
-      if (product.faveProduct!.isNotEmpty) {
-        for (FaveProduct favoriteProduct in product.faveProduct!) {
-          if (favoriteProduct.forUser == userId) {
-            favoriteProductsList.add(product);
-            isFave.addAll({
-              product.productId!: true,
-            });
-          }
-        }
-      }
-    }
+    // Favorites are handled locally after adding
   }
 
   Future<void> payment({required String productId}) async {
-    String path = 'purchase';
     emit(PaymentLoadingState());
     try {
-      await _dioServises.postData(path,
-          {"user_id": userId, "is_bought": true, "product_id": productId});
+      await productRepository.processPayment(productId);
+      var product = products.firstWhere((p) => p.productId == productId);
+      myOrdersList.add(product);
       emit(PaymentSuccesseState());
     } catch (e) {
       emit(PaymentErrorState());
@@ -124,14 +106,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   void getMyOrders() {
-    for (ProductModel product in products) {
-      if (product.purchase != null && product.purchase!.isNotEmpty) {
-        for (Purchase purchaseProduct in product.purchase!) {
-          if (purchaseProduct.userId == userId) {
-            myOrdersList.add(product);
-          }
-        }
-      }
-    }
+     // Handled locally now in payment
   }
 }

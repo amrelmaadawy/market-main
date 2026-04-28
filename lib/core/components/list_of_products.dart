@@ -1,3 +1,4 @@
+import 'package:app/core/app_colors.dart';
 import 'package:app/core/components/product_card.dart';
 import 'package:app/core/cubit/home_cubit.dart';
 import 'package:app/core/functions/snake_bar.dart';
@@ -5,6 +6,9 @@ import 'package:app/core/models/product_model/product_model.dart';
 import 'package:app/core/shimmer/shimmer_list_of_product.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:app/core/locator.dart';
+import 'package:app/core/repositories/product_repository.dart';
 
 class ListOfProducts extends StatelessWidget {
   const ListOfProducts({
@@ -27,7 +31,7 @@ class ListOfProducts extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          HomeCubit()..getProduct(query: query, category: category),
+          HomeCubit(productRepository: locator<ProductRepository>())..getProduct(query: query, category: category),
       child: BlocConsumer<HomeCubit, HomeState>(
         listener: (context, state) {
           if (state is PaymentSuccesseState) {
@@ -51,9 +55,22 @@ class ListOfProducts extends StatelessWidget {
                           : homeCubit.products;
           return product.isEmpty
               ? Center(
-                  child: Text(
-                    'There is no element',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 60.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.inventory_2_outlined, size: 64, color: AppColors.kGreyColor.withOpacity(0.5)),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'No products found',
+                          style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.kGreyColor),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               : state is GetDataLoadingState

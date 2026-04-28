@@ -41,40 +41,49 @@ class _MainHomeViewState extends State<MainHomeView> {
           return Scaffold(
             body: SafeArea(child: views[cubit.currentIndex]),
             bottomNavigationBar: Container(
-              color: AppColors.kWhiteColor,
+              decoration: BoxDecoration(
+                color: AppColors.kWhiteColor,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
+              ),
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
                 child: GNav(
                     selectedIndex: cubit.currentIndex,
-                    rippleColor: AppColors.kPrimaryColor,
-                    hoverColor: AppColors.kPrimaryColor,
-                    tabBorderRadius: 20,
-                    duration: const Duration(milliseconds: 900),
+                    rippleColor: AppColors.kPrimaryColor.withOpacity(0.1),
+                    hoverColor: AppColors.kPrimaryColor.withOpacity(0.05),
+                    tabBorderRadius: 16,
+                    duration: const Duration(milliseconds: 400),
                     gap: 8,
-                    color: Colors.grey,
-                    activeColor: AppColors.kWhiteColor,
+                    color: AppColors.kGreyColor,
+                    activeColor: AppColors.kPrimaryColor,
                     iconSize: 24,
-                    tabBackgroundColor: AppColors.kPrimaryColor,
+                    tabBackgroundColor: AppColors.kPrimaryColor.withOpacity(0.1),
                     onTabChange: (index) {
                       cubit.changeView(index);
                     },
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
+                        horizontal: 16, vertical: 12),
                     tabs: const [
                       GButton(
-                        icon: Icons.home,
+                        icon: Icons.home_rounded,
                         text: 'Home',
                       ),
                       GButton(
-                        icon: Icons.store,
+                        icon: Icons.storefront_rounded,
                         text: 'Store',
                       ),
                       GButton(
-                        icon: Icons.favorite,
+                        icon: Icons.favorite_rounded,
                         text: 'Favorites',
                       ),
                       GButton(
-                        icon: Icons.person,
+                        icon: Icons.person_rounded,
                         text: 'Profile',
                       )
                     ]),

@@ -28,26 +28,28 @@ class CustomTextFormFeild extends StatelessWidget {
         keyboardType: keyboardType,
         controller: controller,
         decoration: InputDecoration(
+          filled: true,
+          fillColor: AppColors.kWhiteColor,
           suffixIcon: suffixIcon,
-          enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.kBordersideColor,
-                width: 2,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Colors.transparent,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(8))),
-          focusedBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.kBordersideColor,
-                width: 2,
+              borderRadius: BorderRadius.circular(16)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: AppColors.kPrimaryColor,
+                width: 1.5,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(8))),
-          border: const OutlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.kBordersideColor,
-                width: 2,
+              borderRadius: BorderRadius.circular(16)),
+          border: OutlineInputBorder(
+              borderSide: const BorderSide(
+                color: Colors.transparent,
               ),
-              borderRadius: BorderRadius.all(Radius.circular(8))),
+              borderRadius: BorderRadius.circular(16)),
           labelText: lableText,
+          labelStyle: const TextStyle(color: AppColors.kGreyColor),
         ),
       ),
     );

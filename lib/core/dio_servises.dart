@@ -1,10 +1,8 @@
-import 'package:app/core/sensitive_data.dart';
 import 'package:dio/dio.dart';
 
 class DioServises {
   final Dio _dio = Dio(BaseOptions(
-      baseUrl: "https://zieeiuozhhjeiseqclvd.supabase.co/rest/v1/",
-      headers: {"apiKey": apiKey}));
+      baseUrl: "https://fakestoreapi.com/"));
 
   Future<Response> getData(String path) async {
     return _dio.get(path);
